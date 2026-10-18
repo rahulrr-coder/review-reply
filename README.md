@@ -2,6 +2,8 @@
 
 Reply to every Google review in 10 seconds.
 
+**Live:** https://review-reply-481.netlify.app
+
 Small business owners (restaurants, salons, clinics, shops) get Google reviews and rarely reply, because writing replies is tedious and a bad reply to a 1-star review does more harm than no reply. Paste a review, pick the star rating and language, and get three ready-to-post replies (short, standard, warm). Copy one into Google Business Profile.
 
 **Status:** works end to end locally. Tested so far against a temporary non-open model. Before submitting, switch `.env` to an open-weight model (see below).
@@ -28,7 +30,7 @@ The core model must be open-weight. Do not point this at Claude, GPT or Gemini.
 
 ## Deploy
 
-Netlify builds with `npm run build` through `@sveltejs/adapter-netlify`. Add the four `LLM_*` variables in Netlify → Site configuration → Environment variables.
+Netlify builds with `npm run build` through `@sveltejs/adapter-netlify`. The site is connected to this repo: every push to `main` deploys to production automatically. Set the `LLM_*` variables in Netlify → Site configuration → Environment variables, then trigger a redeploy for them to take effect.
 
 ## Layout
 
