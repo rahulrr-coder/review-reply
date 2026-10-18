@@ -43,6 +43,21 @@ export interface ReplyResult {
 	ownerNote?: string;
 }
 
+// A review pulled out of text the owner pasted from their Google Maps page.
+export interface ImportedReview {
+	author: string;
+	when: string;
+	stars: Stars; // estimated: Google's copied page text doesn't include star ratings
+	truncated: boolean; // Google cut it short with "… More"
+	text: string;
+}
+
+export interface ImportResult {
+	business: { name: string; type: string; phone: string; address: string };
+	repliedCount: number;
+	reviews: ImportedReview[];
+}
+
 export interface SampleReview {
 	id: string;
 	lang: Exclude<Lang, 'auto'>;

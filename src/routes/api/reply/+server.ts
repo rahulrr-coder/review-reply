@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { LLM_API_KEY, LLM_BASE_URL, LLM_MODEL, LLM_PROVIDER } from '$app/env/private';
+import { llmEnv } from '#lib/server/llm-env.js';
 import { generateReplies } from '#lib/server/replies.js';
 import { LANG_NAMES, type Lang, type ReplyRequest, type Stars, type Tone } from '#lib/types.js';
 import type { RequestHandler } from './$types';
@@ -7,7 +7,6 @@ import type { RequestHandler } from './$types';
 const TONES: Tone[] = ['warm', 'professional', 'friendly'];
 const LANGS = ['auto', ...Object.keys(LANG_NAMES)] as Lang[];
 const FAILED = "Couldn't generate replies, try again.";
-const env = { LLM_PROVIDER, LLM_API_KEY, LLM_MODEL, LLM_BASE_URL };
 
 const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 
@@ -47,7 +46,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	if (typeof req === 'string') return json({ status: 'error', message: req }, { status: 400 });
 
 	try {
-		const result = await generateReplies(req, env);
+		const result = await generateReplies(req, llmEnv);
 		if (!result) {
 			console.error('❌ Model output was not valid JSON after one retry');
 			return json({ status: 'error', message: FAILED }, { status: 502 });

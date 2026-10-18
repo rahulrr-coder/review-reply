@@ -6,6 +6,8 @@ Reply to every Google review in 10 seconds.
 
 Small business owners (restaurants, salons, clinics, shops) get Google reviews and rarely reply, because writing replies is tedious and a bad reply to a 1-star review does more harm than no reply. Paste a review, pick the star rating and language, and get three ready-to-post replies (short, standard, warm). Copy one into Google Business Profile.
 
+**Import from Google Maps:** copy your business page from Google Maps (select all, copy) and paste it in. The app fills in your business details and lists the reviews that have no "Response from the owner" yet, then writes replies for each. No Google account connection or API key needed. Star ratings aren't in Google's copied text, so they're estimated and you can correct them.
+
 **Status:** works end to end locally. Tested so far against a temporary non-open model. Before submitting, switch `.env` to an open-weight model (see below).
 
 ## Run locally
@@ -41,7 +43,9 @@ src/lib/server/prompt.ts  system + user prompt
 src/lib/server/parse.ts   extract and validate the model's JSON
 src/lib/server/llm.ts     the only file that knows the provider
 src/lib/server/replies.ts prompt → model → parse, one retry
-src/routes/api/reply/     POST endpoint
+src/routes/api/reply/     POST: review → 3 replies
+src/routes/api/import/    POST: pasted Google Maps page → business details + unreplied reviews
+src/lib/ReplySlips.svelte the reply cards with copy buttons
 src/env.ts                env var declarations (SvelteKit 3)
 src/routes/+page.svelte   the whole UI
 ```

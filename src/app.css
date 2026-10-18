@@ -1,0 +1,105 @@
+/* Carbon-copy bill book: blue carbon ink on cool white paper, stamp red, marigold stars. */
+:root {
+	--paper: #f5f7fc;
+	--card: #ffffff;
+	--slip: #f0f3ff;
+	--ink: #1b2340;
+	--muted: #5b6385;
+	--line: #dce1f0;
+	--carbon: #3346c8;
+	--carbon-ink: #ffffff;
+	--wash: #e8ebfa;
+	--stamp: #c8322b;
+	--stamp-wash: #fbe9e7;
+	--gold: #d99a12;
+	--gold-wash: #fcf3dc;
+
+	--sans: 'Anek Latin', 'Anek Devanagari', 'Anek Tamil', 'Anek Telugu', 'Anek Kannada', 'Anek Malayalam',
+		'Anek Bangla', 'Anek Gujarati', system-ui, sans-serif;
+	--mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+	color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--paper: #10132a;
+		--card: #181c38;
+		--slip: #1e2347;
+		--ink: #e9ebf8;
+		--muted: #a3a9c9;
+		--line: #2b3157;
+		--carbon: #8e9cff;
+		--carbon-ink: #10132a;
+		--wash: #232a5c;
+		--stamp: #ff8073;
+		--stamp-wash: #3a1e27;
+		--gold: #f3c14e;
+		--gold-wash: #3a3015;
+		color-scheme: dark;
+	}
+}
+
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font: 400 17px/1.55 var(--sans);
+	-webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+	color: inherit;
+}
+
+:focus-visible {
+	outline: 2px solid var(--carbon);
+	outline-offset: 2px;
+}
+
+/* Small uppercase typewriter labels, as printed on a bill book. */
+.label {
+	font: 600 12px/1.4 var(--mono);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.muted {
+	color: var(--muted);
+}
+
+.btn {
+	min-height: 48px;
+	padding: 0 20px;
+	border-radius: 10px;
+	border: 1.5px solid var(--carbon);
+	background: transparent;
+	color: var(--carbon);
+	font-weight: 600;
+	cursor: pointer;
+}
+.btn.primary {
+	background: var(--carbon);
+	color: var(--carbon-ink);
+}
+.btn.wide {
+	width: 100%;
+}
+.btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		transition: none !important;
+	}
+}

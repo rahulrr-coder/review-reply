@@ -13,15 +13,15 @@ const TIMEOUT_MS = 20_000;
 const TEMPERATURE = 0.7;
 const MAX_TOKENS = 600;
 
-export async function generate(system: string, user: string, env: LlmEnv): Promise<string> {
+export async function generate(system: string, user: string, env: LlmEnv, maxTokens = MAX_TOKENS): Promise<string> {
 	// Default to openai-compatible when a base URL is set, so an existing OpenAI-style .env works unchanged.
 	const provider = env.LLM_PROVIDER || (env.LLM_BASE_URL ? 'openai-compatible' : 'google');
 	if (!env.LLM_API_KEY || !env.LLM_MODEL) throw new LlmError('Server is not configured: set LLM_API_KEY and LLM_MODEL.');
 
 	const signal = AbortSignal.timeout(TIMEOUT_MS);
 	try {
-		if (provider === 'google') return await google(system, user, env, signal);
-		if (provider === 'openai-compatible') return await openaiCompatible(system, user, env, signal);
+		if (provider === 'google') return await google(system, user, env, signal, maxTokens);
+		if (provider === 'openai-compatible') return await openaiCompatible(system, user, env, signal, maxTokens);
 		throw new LlmError(`Unknown LLM_PROVIDER "${provider}".`);
 	} catch (e) {
 		if (e instanceof Error && (e.name === 'TimeoutError' || e.name === 'AbortError')) {
@@ -31,7 +31,7 @@ export async function generate(system: string, user: string, env: LlmEnv): Promi
 	}
 }
 
-async function openaiCompatible(system: string, user: string, env: LlmEnv, signal: AbortSignal) {
+async function openaiCompatible(system: string, user: string, env: LlmEnv, signal: AbortSignal, maxTokens: number) {
 	if (!env.LLM_BASE_URL) throw new LlmError('LLM_BASE_URL is required for openai-compatible.');
 	const base = {
 		model: env.LLM_MODEL,
@@ -49,7 +49,7 @@ async function openaiCompatible(system: string, user: string, env: LlmEnv, signa
 		}).then(readJson);
 
 	try {
-		const data = await call({ ...base, temperature: TEMPERATURE, max_tokens: MAX_TOKENS });
+		const data = await call({ ...base, temperature: TEMPERATURE, max_tokens: maxTokens });
 		return String(data?.choices?.[0]?.message?.content ?? '');
 	} catch (e) {
 		// Some hosted reasoning models reject temperature/max_tokens. Retry once with defaults.
@@ -59,7 +59,7 @@ async function openaiCompatible(system: string, user: string, env: LlmEnv, signa
 	}
 }
 
-async function google(system: string, user: string, env: LlmEnv, signal: AbortSignal) {
+async function google(system: string, user: string, env: LlmEnv, signal: AbortSignal, maxTokens: number) {
 	const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(env.LLM_MODEL!)}:generateContent`;
 	const res = await fetch(url, {
 		method: 'POST',
@@ -67,7 +67,7 @@ async function google(system: string, user: string, env: LlmEnv, signal: AbortSi
 		body: JSON.stringify({
 			// Gemma models on the Gemini API reject systemInstruction, so the system prompt goes first in the user turn.
 			contents: [{ role: 'user', parts: [{ text: `${system}\n\n${user}` }] }],
-			generationConfig: { temperature: TEMPERATURE, maxOutputTokens: MAX_TOKENS }
+			generationConfig: { temperature: TEMPERATURE, maxOutputTokens: maxTokens }
 		}),
 		signal
 	});
