@@ -1,48 +1,51 @@
-/* Carbon-copy bill book: blue carbon ink on cool white paper, stamp red, marigold stars. */
+/* Marigold & indigo: the colours of an Indian shop sign, set clean. */
 :root {
-	--paper: #f5f7fc;
+	--bg: #f6f5fb;
 	--card: #ffffff;
-	--slip: #f0f3ff;
-	--ink: #1b2340;
-	--muted: #5b6385;
-	--line: #dce1f0;
-	--carbon: #3346c8;
-	--carbon-ink: #ffffff;
-	--wash: #e8ebfa;
-	--stamp: #c8322b;
-	--stamp-wash: #fbe9e7;
-	--gold: #d99a12;
-	--gold-wash: #fcf3dc;
+	--surface: #f0eef8;
+	--ink: #1e1a3c;
+	--muted: #66628a;
+	--line: #e4e1f0;
+	--marigold: #ffb400;
+	--marigold-wash: #fff4d6;
+	--sign-ink: #1e1a3c; /* text on marigold, same in both themes */
+	--btn-bg: #1e1a3c;
+	--btn-ink: #ffffff;
+	--leaf: #0f7b4b;
+	--leaf-wash: #e2f4ea;
+	--chilli: #d3263a;
+	--chilli-wash: #fce7ea;
+	--shadow: 0 1px 0 rgb(30 26 60 / 0.04), 0 14px 36px rgb(30 26 60 / 0.09);
 
 	--sans: 'Anek Latin', 'Anek Devanagari', 'Anek Tamil', 'Anek Telugu', 'Anek Kannada', 'Anek Malayalam',
 		'Anek Bangla', 'Anek Gujarati', system-ui, sans-serif;
-	--mono: 'IBM Plex Mono', ui-monospace, monospace;
 
 	color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
-		--paper: #10132a;
-		--card: #181c38;
-		--slip: #1e2347;
-		--ink: #e9ebf8;
-		--muted: #a3a9c9;
-		--line: #2b3157;
-		--carbon: #8e9cff;
-		--carbon-ink: #10132a;
-		--wash: #232a5c;
-		--stamp: #ff8073;
-		--stamp-wash: #3a1e27;
-		--gold: #f3c14e;
-		--gold-wash: #3a3015;
+		--bg: #110f24;
+		--card: #1b1835;
+		--surface: #252146;
+		--ink: #f3f1ff;
+		--muted: #a8a4c8;
+		--line: #312c57;
+		--marigold-wash: #3a2f12;
+		--btn-bg: #ffb400;
+		--btn-ink: #1e1a3c;
+		--leaf: #5fd39a;
+		--leaf-wash: #163a2a;
+		--chilli: #ff7d8b;
+		--chilli-wash: #3d1a24;
+		--shadow: 0 14px 36px rgb(0 0 0 / 0.35);
 		color-scheme: dark;
 	}
 }
 
 body {
 	margin: 0;
-	background: var(--paper);
+	background: var(--bg);
 	color: var(--ink);
 	font: 400 17px/1.55 var(--sans);
 	-webkit-font-smoothing: antialiased;
@@ -57,14 +60,14 @@ textarea {
 }
 
 :focus-visible {
-	outline: 2px solid var(--carbon);
+	outline: 3px solid var(--marigold);
 	outline-offset: 2px;
 }
 
-/* Small uppercase typewriter labels, as printed on a bill book. */
-.label {
-	font: 600 12px/1.4 var(--mono);
-	letter-spacing: 0.08em;
+.eyebrow {
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: var(--muted);
 }
@@ -74,24 +77,37 @@ textarea {
 }
 
 .btn {
-	min-height: 48px;
-	padding: 0 20px;
-	border-radius: 10px;
-	border: 1.5px solid var(--carbon);
-	background: transparent;
-	color: var(--carbon);
-	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	min-height: 52px;
+	padding: 0 22px;
+	border-radius: 14px;
+	border: 2px solid var(--btn-bg);
+	background: var(--btn-bg);
+	color: var(--btn-ink);
+	font-weight: 700;
+	font-size: 17px;
 	cursor: pointer;
+	transition: transform 120ms, background 160ms, border-color 160ms;
 }
-.btn.primary {
-	background: var(--carbon);
-	color: var(--carbon-ink);
+.btn:active:not(:disabled) {
+	transform: translateY(1px) scale(0.99);
+}
+.btn.ghost {
+	background: transparent;
+	color: var(--ink);
+	border-color: var(--line);
+}
+.btn.ghost:hover:not(:disabled) {
+	border-color: var(--ink);
 }
 .btn.wide {
 	width: 100%;
 }
 .btn:disabled {
-	opacity: 0.45;
+	opacity: 0.4;
 	cursor: not-allowed;
 }
 

@@ -4,6 +4,8 @@ Reply to every Google review in 10 seconds.
 
 **Live:** https://review-reply-481.netlify.app
 
+![Review Reply](docs/screenshots/hero.jpg)
+
 Small business owners (restaurants, salons, clinics, shops) get Google reviews and rarely reply, because writing replies is tedious and a bad reply to a 1-star review does more harm than no reply. Paste a review, pick the star rating and language, and get three ready-to-post replies (short, standard, warm). Copy one into Google Business Profile.
 
 **Import from Google Maps:** copy your business page from Google Maps (select all, copy) and paste it in. The app fills in your business details and lists the reviews that have no "Response from the owner" yet, then writes replies for each. No Google account connection or API key needed. Star ratings aren't in Google's copied text, so they're estimated and you can correct them.

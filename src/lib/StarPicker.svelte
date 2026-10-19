@@ -46,7 +46,7 @@
 		min-height: 36px;
 	}
 	button.on {
-		color: var(--gold);
+		color: var(--marigold);
 	}
 	button:active {
 		transform: scale(0.88);
