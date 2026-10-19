@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { fly } from 'svelte/transition';
 	import ReplyCard from '#lib/ReplyCard.svelte';
 	import StarPicker from '#lib/StarPicker.svelte';
 	import { samplesFor } from '#lib/samples.js';
@@ -24,8 +23,6 @@
 		{ value: 'auto', label: 'Detect automatically' },
 		...Object.entries(LANG_NAMES).map(([value, name]) => ({ value: value as Lang, label: MIXED[value as Lang] ?? name }))
 	];
-	// The headline's last word, cycling through every language we reply in, each in its own script.
-	const ROTOR = ['தமிழ்', 'हिन्दी', 'English', 'తెలుగు', 'ಕನ್ನಡ', 'മലയാളം', 'Tanglish', 'मराठी', 'বাংলা', 'ગુજરાતી', 'Hinglish'];
 
 	const emptyProfile: BusinessProfile = { name: '', type: '', tone: 'friendly', signOff: '', contact: '', canOffer: '' };
 
@@ -36,8 +33,6 @@
 		result?: ReplyResult;
 		error?: string;
 	};
-
-	let rotor = $state(0);
 
 	let profile = $state<BusinessProfile>({ ...emptyProfile });
 	let saved = $state(false);
@@ -76,9 +71,6 @@
 		} catch {
 			// Storage blocked (private window): everything still works, it just won't be remembered.
 		}
-		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-		const t = setInterval(() => (rotor = (rotor + 1) % ROTOR.length), 1700);
-		return () => clearInterval(t);
 	});
 
 	async function openProfile(msg = '') {
@@ -190,13 +182,8 @@
 	<div class="hero-inner">
 		<div class="pitch">
 			<p class="brand"><span class="mark" aria-hidden="true">★</span> Review Reply</p>
-			<h1 aria-label="Reply to every Google review in your customer's language">
-				<span aria-hidden="true">Reply to every Google review in</span>
-				<span class="rotor" aria-hidden="true">
-					{#key rotor}<span class="word" in:fly={{ y: 18, duration: 260 }}>{ROTOR[rotor]}</span>{/key}
-				</span>
-			</h1>
-			<p class="sub">Paste a review, get 3 replies you can post in 10 seconds. Built for restaurants, salons, clinics and shops.</p>
+			<h1>Reply to every Google review in <span class="highlight">10 seconds</span></h1>
+			<p class="sub">Paste a review, get 3 ready-to-post replies in your customer's language. Built for restaurants, salons, clinics and shops.</p>
 			<p class="tags"><span>Open source</span><span>Open-weight AI</span><span>9 languages</span></p>
 			<a class="cta" href="#app">Start replying ↓</a>
 		</div>
@@ -440,19 +427,14 @@
 		letter-spacing: -0.005em;
 		text-transform: uppercase;
 	}
-	.rotor {
+	.highlight {
 		display: inline-block;
 		margin-top: 0.08em;
-		padding: 0.04em 0.22em 0.1em;
+		padding: 0.02em 0.2em 0.06em;
 		border-radius: 0.14em;
 		background: var(--sign-ink);
 		color: var(--marigold);
-		line-height: 1.12;
-		text-transform: none;
-		min-width: 2.2em;
-	}
-	.word {
-		display: inline-block;
+		line-height: 1.02;
 	}
 	.sub {
 		margin: 18px 0 0;
